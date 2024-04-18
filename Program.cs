@@ -105,7 +105,7 @@
             }
         }
 
-        static void ManageCoursesMenu()
+        static void ManageCoursesMenu(List<Course> courses)
         {
             Console.WriteLine("MANAGE COURSES :");
             Console.WriteLine("1. List all courses");
@@ -117,13 +117,13 @@
             switch (choice)
             {
                 case 1:
-                    ListCourses();
+                    ListCourse(courses);
                         break;
                 case 2:
-                    AddNewCouse();
+                    AddNewCourse(courses);
                         break;
                 case 3:
-                    DeleteCourse();
+                    DeleteCourse(courses);
                         break;
                 case 0:
                     return;
@@ -231,7 +231,57 @@
             }
         }
 
+        static void ListCourse(List<Course> courses)
+        {
+            Console.WriteLine("COURSES LIST: ");
+            foreach (var course in courses)
+            {
+                Console.WriteLine($"ID: {course.Id}, Name: {course.Name}");
+            }
+        }
 
+        static void AddNewCourse(List<Course> courses)
+        {
+            Console.WriteLine("ADDING NEW COURSE :");
+            Console.WriteLine("Please enter course name :");
+            string name = Console.ReadLine();
+            int NewCourseId = courses.Count > 0 ? courses.Max(c => c.Id) + 1 : 1;
+            Course newCourses = new Course
+            {
+                Id = NewCourseId,
+                Name = name
+            };
+
+            courses.Add(newCourses);
+            Console.WriteLine("Course added successfully !!!");
+        }
+
+        static void DeleteCourse(List<Course> courses)
+        {
+            Console.WriteLine("DELETE COURSES");
+            Console.WriteLine("Please enter the ID of the course you wanna delete : ");
+            int courseIdToDelete = Convert.ToInt32(Console.ReadLine());
+
+            Course courseToDelete = courses.Find(c => c.Id == courseIdToDelete);
+            if (courseToDelete != null)
+            {
+                Console.WriteLine($"Are you sure you want to delete the course '{courseToDelete.Name}'? (Y/N)");
+                string confirmation = Console.ReadLine().ToUpper();
+                if (confirmation == "yes")
+                {
+                    courses.Remove(courseToDelete);
+                    Console.WriteLine($"Course '{courseToDelete.Name}' deleted successfully!");
+                }
+                else
+                {
+                    Console.WriteLine("Deletion was cancelled");
+                }
+            } 
+            else
+            {
+                Console.WriteLine("Sorry but the course you looking for wasn't found");
+            }
+        }
     }
 
     class Student
@@ -250,7 +300,7 @@
         public string Commentary { get; set; }
     }
 
-    class Courses
+    class Course
     {
         public int Id { get; set; }
         public string Name { get; set; }

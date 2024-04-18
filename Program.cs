@@ -17,6 +17,7 @@
             string jsonFile = args[0];
 
             List<Student> students = LoadData(jsonFile);
+            List<Course> courses = LoadCourses();
 
             DisplayMainMenu();
             int choice = AskChoice();
@@ -29,7 +30,7 @@
                         ManageStudentsMenu(students);
                         break;
                     case 2:
-                        ManageCoursesMenu();
+                        ManageCoursesMenu(courses);
                         break;
                     default:
                         Console.WriteLine("Invalid option");
@@ -281,6 +282,18 @@
             {
                 Console.WriteLine("Sorry but the course you looking for wasn't found");
             }
+        }
+
+        static List<Course> LoadCourses()
+        {
+            List<Course> courses = new List<Course>
+            {
+                new Course {Id = 1, Name = "Maths"},
+                new Course {Id = 2, Name = "English"},
+                new Course {Id = 3,Name = "History"},
+                new Course {Id = 4,Name = "Science"}
+            };
+            return courses;
         }
     }
 

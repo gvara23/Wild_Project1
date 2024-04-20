@@ -28,9 +28,11 @@
                 {
                     case 1:
                         ManageStudentsMenu(students);
+                        SaveData(jsonFile, students);
                         break;
                     case 2:
                         ManageCoursesMenu(courses);
+                        SaveData(jsonFile,students);
                         break;
                     default:
                         Console.WriteLine("Invalid option");
@@ -169,7 +171,7 @@
             Console.WriteLine("New student added successfully!");
         }
 
-        static void ViewStudentsInfo(List<Student> students)
+        static void ViewStudentsInfo(List<Student> students, List<Course> courses = null)
         {
             Console.Write("Enter student ID: ");
             int studentId = Convert.ToInt32(Console.ReadLine());
@@ -178,26 +180,67 @@
 
             if (student != null)
             {
-                Console.WriteLine($"STUDENT DETAILS - ID: {student.Id}");
-                Console.WriteLine($"Name: {student.Name} {student.LastName}");
-                Console.WriteLine($"Date of Birth: {student.DateOfBirth.ToString("yyyy-MM-dd")}");
+                Console.WriteLine("--------------------------------------------------");
+                Console.WriteLine("Students Info :");
+                Console.WriteLine();
+                Console.WriteLine($"Name               : {student.Name}");
+                Console.WriteLine($"Last Name           : {student.LastName}");
+                Console.WriteLine($"Birthday : {student.DateOfBirth.ToString("dd/MM/yyyy")}");
+                Console.WriteLine();
+                Console.WriteLine("School results :");
+                Console.WriteLine();
+
                 if (student.GradesList.Count > 0)
                 {
-                    Console.WriteLine("Grades:");
                     foreach (var grade in student.GradesList)
                     {
-                        Console.WriteLine($"Course ID: {grade.CourseId}, Value: {grade.Value}, Commentary: {grade.Commentary}");
+                        Console.WriteLine($"    Course : {GetCoursesName(grade.CourseId, courses)}");
+                        Console.WriteLine($"        Grade : {grade.Value}/20");
+                        Console.WriteLine($"        Commentary : {grade.Commentary}");
+                        Console.WriteLine();
                     }
+                    double averageGrade = CalculateAverageGrade(student.GradesList);
+                    Console.WriteLine($"    Average : {averageGrade}/20");
                 }
                 else
                 {
-                    Console.WriteLine("No grades available for this student.");
+                    Console.WriteLine("    No grades available for this student.");
                 }
+                Console.WriteLine("----------------------------------------------------------------------");
             }
             else
             {
                 Console.WriteLine("Student not found.");
             }
+        }
+
+        static string GetCoursesName(int courseId, List<Course> courses)
+        {
+            if (courses != null)
+            {
+                Course course = courses.Find(c => c.Id == courseId);
+                if (course != null)
+                {
+                    return course.Name;
+                }
+            }
+            return "Unknown";
+        }
+
+        static double CalculateAverageGrade(List<Grades> gradesList)
+        {
+            if (gradesList == null || gradesList.Count == 0)
+            {
+                return 0;
+            }
+            double averageGrade = 0;
+            foreach (var grade in gradesList)
+            {
+                averageGrade += grade.Value;
+            }
+
+            double totalGrade = averageGrade / gradesList.Count;
+            return Math.Round(totalGrade * 2, MidpointRounding.AwayFromZero)/2;
         }
 
         static void AddGradesStudents(List<Student> students)

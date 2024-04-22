@@ -65,24 +65,27 @@
 
         static void DisplayMainMenu()
         {
-            Console.WriteLine("MAIN MENU : ");
+            Console.WriteLine("===== MAIN MENU =====");
             Console.WriteLine("1. Manage Students");
             Console.WriteLine("2. Manage Courses");
             Console.WriteLine("0. Quit");
+            Console.WriteLine("=====================");
         }
         static int AskChoice()
         {
+            Console.WriteLine();
             Console.Write("Choice : ");
             return Convert.ToInt32(Console.ReadLine());
         }
         static void ManageStudentsMenu(List<Student> students)
         {
-            Console.WriteLine("MANAGE STUDENTS :");
+            Console.WriteLine("===== MANAGE STUDENTS =====");
             Console.WriteLine("1. List  actual students");
             Console.WriteLine("2. Add new student");
             Console.WriteLine("3. View Students details");
             Console.WriteLine("4. Add grades for student");
             Console.WriteLine("0. Exit");
+            Console.WriteLine("============================");
 
             int choice = AskChoice();
             switch (choice)
@@ -110,11 +113,13 @@
 
         static void ManageCoursesMenu(List<Course> courses)
         {
-            Console.WriteLine("MANAGE COURSES :");
+            Console.WriteLine("===== MANAGE COURSES =====");
             Console.WriteLine("1. List all courses");
             Console.WriteLine("2. Add new courses");
             Console.WriteLine("3. Delete courses");
             Console.WriteLine("0. Back to Main menu");
+            Console.WriteLine("============================");
+
 
             int choice = AskChoice();
             switch (choice)

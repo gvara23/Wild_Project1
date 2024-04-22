@@ -190,10 +190,11 @@
                 Console.WriteLine("School results :");
                 Console.WriteLine();
 
-                if (student.GradesList.Count > 0)
+                if (student.GradesList.Count > 0 )
                 {
                     foreach (var grade in student.GradesList)
                     {
+                        /*string courseName = GetCoursesName(grade.CourseId, courses);*/
                         Console.WriteLine($"    Course : {GetCoursesName(grade.CourseId, courses)}");
                         Console.WriteLine($"        Grade : {grade.Value}/20");
                         Console.WriteLine($"        Commentary : {grade.Commentary}");
@@ -205,6 +206,7 @@
                 else
                 {
                     Console.WriteLine("    No grades available for this student.");
+                    Console.WriteLine("    No courses available for this student.");
                 }
                 Console.WriteLine("----------------------------------------------------------------------");
             }
@@ -309,7 +311,7 @@
             Course courseToDelete = courses.Find(c => c.Id == courseIdToDelete);
             if (courseToDelete != null)
             {
-                Console.WriteLine($"Are you sure you want to delete the course '{courseToDelete.Name}'? (Y/N)");
+                Console.WriteLine($"Are you sure you want to delete the course '{courseToDelete.Name}'? (yes/no)");
                 string confirmation = Console.ReadLine().ToUpper();
                 if (confirmation == "yes")
                 {
@@ -338,6 +340,8 @@
             };
             return courses;
         }
+
+      
     }
 
     class Student
@@ -347,6 +351,11 @@
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public List<Grades> GradesList { get; set; }
+
+        public Student()
+        {
+            GradesList = new List<Grades>();
+        }
     }
 
     class Grades

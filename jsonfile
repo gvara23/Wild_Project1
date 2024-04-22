@@ -9,6 +9,34 @@
         "CourseId": 1,
         "Value": 20.0,
         "Commentary": "nice job "
+      },
+      {
+        "CourseId": 1,
+        "Value": 20.0,
+        "Commentary": "nice job"
+      },
+      {
+        "CourseId": 1,
+        "Value": 24.0,
+        "Commentary": ""
+      },
+      {
+        "CourseId": 3,
+        "Value": 20.0,
+        "Commentary": "nice job"
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "Name": "Luis",
+    "LastName": "Alvarez",
+    "DateOfBirth": "2006-04-12T00:00:00",
+    "GradesList": [
+      {
+        "CourseId": 4,
+        "Value": 19.0,
+        "Commentary": "idk what to say"
       }
     ]
   }

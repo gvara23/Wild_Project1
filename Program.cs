@@ -321,29 +321,36 @@
         static void DeleteCourse(List<Course> courses)
         {
             Console.WriteLine("DELETE COURSES");
-            Console.WriteLine("Please enter the ID of the course you wanna delete : ");
-            int courseIdToDelete = Convert.ToInt32(Console.ReadLine());
-
-            Course courseToDelete = courses.Find(c => c.Id == courseIdToDelete);
-            if (courseToDelete != null)
+            Console.WriteLine("Please enter the ID of the course you want to delete : ");
+            int courseIdToDelete;
+            if (!int.TryParse(Console.ReadLine(), out courseIdToDelete))
             {
+                Console.WriteLine("Invalid input. Please enter a valid course ID.");
+                return;
+            }
+
+            int indexToDelete = courses.FindIndex(c => c.Id == courseIdToDelete);
+            if (indexToDelete != -1)
+            {
+                Course courseToDelete = courses[indexToDelete];
                 Console.WriteLine($"Are you sure you want to delete the course '{courseToDelete.Name}'? (yes/no)");
-                string confirmation = Console.ReadLine().ToUpper();
+                string confirmation = Console.ReadLine().Trim().ToLower();
                 if (confirmation == "yes")
                 {
-                    courses.Remove(courseToDelete);
+                    courses.RemoveAt(indexToDelete);
                     Console.WriteLine($"Course '{courseToDelete.Name}' deleted successfully!");
                 }
                 else
                 {
                     Console.WriteLine("Deletion was cancelled");
                 }
-            } 
+            }
             else
             {
-                Console.WriteLine("Sorry but the course you looking for wasn't found");
+                Console.WriteLine("Sorry but the course you are looking for wasn't found");
             }
         }
+
 
         static List<Course> LoadCourses()
         {

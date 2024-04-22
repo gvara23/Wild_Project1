@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Xml;
     using Newtonsoft.Json;
 
     internal class Program
@@ -27,7 +26,7 @@
                 switch (choice)
                 {
                     case 1:
-                        ManageStudentsMenu(students);
+                        ManageStudentsMenu(students, courses);
                         SaveData(jsonFile, students);
                         break;
                     case 2:
@@ -73,12 +72,14 @@
         }
         static int AskChoice()
         {
-            Console.WriteLine();
             Console.Write("Choice : ");
+            Console.WriteLine();
             return Convert.ToInt32(Console.ReadLine());
+
         }
-        static void ManageStudentsMenu(List<Student> students)
+        static void ManageStudentsMenu(List<Student> students,List<Course>courses)
         {
+            Logger.Log("Opened students manage menu", "student.log");
             Console.WriteLine("===== MANAGE STUDENTS =====");
             Console.WriteLine("1. List  actual students");
             Console.WriteLine("2. Add new student");
@@ -97,7 +98,7 @@
                     AddNewStudent(students);
                     break;
                 case 3:
-                    ViewStudentsInfo(students);
+                    ViewStudentsInfo(students,courses);
                     break;
                 case 4:
                     AddGradesStudents(students);
@@ -346,8 +347,36 @@
             return courses;
         }
 
-      
+        public static class Logger
+        {
+            public static void Log(string message, string logFileName)
+            {
+                string logFilePath = $"{logFileName}.log";
+                string logMessage = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} {message}";
+
+                using (StreamWriter sw = File.AppendText(logFilePath))
+                {
+                    sw.WriteLine(logMessage);
+                }
+            }
+        }
+        static List<string> GeneratePromotions(List<Student> students)
+        {
+            List<string> promotions = new List<string>();
+
+            foreach (var student in students)
+            {
+                if (!promotions.Contains(student.Promotion))
+                {
+                    promotions.Add(student.Promotion);
+                }
+            }
+
+            return promotions;
+        }
+
     }
+
 
     class Student
     {
@@ -356,11 +385,12 @@
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public List<Grades> GradesList { get; set; }
-
         public Student()
         {
             GradesList = new List<Grades>();
         }
+        public string Promotion {  get; set; }
+
     }
 
     class Grades

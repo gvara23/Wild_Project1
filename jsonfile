@@ -25,7 +25,8 @@
         "Value": 20.0,
         "Commentary": "nice job"
       }
-    ]
+    ],
+    "Promotion": null
   },
   {
     "Id": 2,
@@ -38,6 +39,7 @@
         "Value": 19.0,
         "Commentary": "idk what to say"
       }
-    ]
+    ],
+    "Promotion": null
   }
 ]

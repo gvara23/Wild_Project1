@@ -41,6 +41,13 @@
                 choice = AskChoice();
             }
             SaveData(jsonFile, students);
+
+            List<string> promotions = GeneratePromotions(students);
+            Console.WriteLine("Promotions:");
+            foreach (var promotion in promotions)
+            {
+                Console.WriteLine(promotion);
+            }
         }
 
         static List<Student> LoadData(string jsonFile)
@@ -161,6 +168,8 @@
             string lastName = Console.ReadLine();
             Console.Write("Enter student date of birth (yyyy-MM-dd): ");
             DateTime dateOfBirth = DateTime.Parse(Console.ReadLine());
+            Console.Write("Enter student promotion: ");
+            string promotion = Console.ReadLine();
 
             int newStudentId = students.Count > 0 ? students.Max(s => s.Id)+ 1 : 1;
 
@@ -170,6 +179,7 @@
                 Name = name,
                 LastName = lastName,
                 DateOfBirth = dateOfBirth,
+                Promotion = promotion,
                 GradesList = new List<Grades>()
             };
 

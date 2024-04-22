@@ -364,19 +364,6 @@
             return courses;
         }
 
-        public static class Logger
-        {
-            public static void Log(string message, string logFileName)
-            {
-                string logFilePath = $"{logFileName}.log";
-                string logMessage = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} {message}";
-
-                using (StreamWriter sw = File.AppendText(logFilePath))
-                {
-                    sw.WriteLine(logMessage);
-                }
-            }
-        }
         static List<string> GeneratePromotions(List<Student> students)
         {
             List<string> promotions = new List<string>();
@@ -394,32 +381,4 @@
 
     }
 
-
-    class Student
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public List<Grades> GradesList { get; set; }
-        public Student()
-        {
-            GradesList = new List<Grades>();
-        }
-        public string Promotion {  get; set; }
-
-    }
-
-    class Grades
-    {
-        public int CourseId { get; set; }
-        public double Value { get; set; }
-        public string Commentary { get; set; }
-    }
-
-    class Course
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
 }

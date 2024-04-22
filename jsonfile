@@ -41,5 +41,24 @@
       }
     ],
     "Promotion": null
+  },
+  {
+    "Id": 3,
+    "Name": "Anya",
+    "LastName": "Forger",
+    "DateOfBirth": "2006-02-23T00:00:00",
+    "GradesList": [
+      {
+        "CourseId": 1,
+        "Value": 15.0,
+        "Commentary": "nice"
+      },
+      {
+        "CourseId": 2,
+        "Value": 18.0,
+        "Commentary": "well done !"
+      }
+    ],
+    "Promotion": "2"
   }
 ]

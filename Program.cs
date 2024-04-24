@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Xml;
     using Newtonsoft.Json;
 
     internal class Program
@@ -27,7 +26,7 @@
                 switch (choice)
                 {
                     case 1:
-                        ManageStudentsMenu(students);
+                        ManageStudentsMenu(students, courses);
                         SaveData(jsonFile, students);
                         break;
                     case 2:
@@ -42,6 +41,13 @@
                 choice = AskChoice();
             }
             SaveData(jsonFile, students);
+
+            List<string> promotions = GeneratePromotions(students);
+            Console.WriteLine("Promotions:");
+            foreach (var promotion in promotions)
+            {
+                Console.WriteLine(promotion);
+            }
         }
 
         static List<Student> LoadData(string jsonFile)
@@ -73,12 +79,14 @@
         }
         static int AskChoice()
         {
-            Console.WriteLine();
             Console.Write("Choice : ");
+            Console.WriteLine();
             return Convert.ToInt32(Console.ReadLine());
+
         }
-        static void ManageStudentsMenu(List<Student> students)
+        static void ManageStudentsMenu(List<Student> students,List<Course>courses)
         {
+            Logger.Log("Opened students manage menu", "student.log");
             Console.WriteLine("===== MANAGE STUDENTS =====");
             Console.WriteLine("1. List  actual students");
             Console.WriteLine("2. Add new student");
@@ -97,7 +105,7 @@
                     AddNewStudent(students);
                     break;
                 case 3:
-                    ViewStudentsInfo(students);
+                    ViewStudentsInfo(students,courses);
                     break;
                 case 4:
                     AddGradesStudents(students);
@@ -160,6 +168,8 @@
             string lastName = Console.ReadLine();
             Console.Write("Enter student date of birth (yyyy-MM-dd): ");
             DateTime dateOfBirth = DateTime.Parse(Console.ReadLine());
+            Console.Write("Enter student promotion: ");
+            string promotion = Console.ReadLine();
 
             int newStudentId = students.Count > 0 ? students.Max(s => s.Id)+ 1 : 1;
 
@@ -169,6 +179,7 @@
                 Name = name,
                 LastName = lastName,
                 DateOfBirth = dateOfBirth,
+                Promotion = promotion,
                 GradesList = new List<Grades>()
             };
 
@@ -310,29 +321,36 @@
         static void DeleteCourse(List<Course> courses)
         {
             Console.WriteLine("DELETE COURSES");
-            Console.WriteLine("Please enter the ID of the course you wanna delete : ");
-            int courseIdToDelete = Convert.ToInt32(Console.ReadLine());
-
-            Course courseToDelete = courses.Find(c => c.Id == courseIdToDelete);
-            if (courseToDelete != null)
+            Console.WriteLine("Please enter the ID of the course you want to delete : ");
+            int courseIdToDelete;
+            if (!int.TryParse(Console.ReadLine(), out courseIdToDelete))
             {
+                Console.WriteLine("Invalid input. Please enter a valid course ID.");
+                return;
+            }
+
+            int indexToDelete = courses.FindIndex(c => c.Id == courseIdToDelete);
+            if (indexToDelete != -1)
+            {
+                Course courseToDelete = courses[indexToDelete];
                 Console.WriteLine($"Are you sure you want to delete the course '{courseToDelete.Name}'? (yes/no)");
-                string confirmation = Console.ReadLine().ToUpper();
+                string confirmation = Console.ReadLine().Trim().ToLower();
                 if (confirmation == "yes")
                 {
-                    courses.Remove(courseToDelete);
+                    courses.RemoveAt(indexToDelete);
                     Console.WriteLine($"Course '{courseToDelete.Name}' deleted successfully!");
                 }
                 else
                 {
                     Console.WriteLine("Deletion was cancelled");
                 }
-            } 
+            }
             else
             {
-                Console.WriteLine("Sorry but the course you looking for wasn't found");
+                Console.WriteLine("Sorry but the course you are looking for wasn't found");
             }
         }
+
 
         static List<Course> LoadCourses()
         {
@@ -346,33 +364,21 @@
             return courses;
         }
 
-      
-    }
-
-    class Student
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public List<Grades> GradesList { get; set; }
-
-        public Student()
+        static List<string> GeneratePromotions(List<Student> students)
         {
-            GradesList = new List<Grades>();
+            List<string> promotions = new List<string>();
+
+            foreach (var student in students)
+            {
+                if (!promotions.Contains(student.Promotion))
+                {
+                    promotions.Add(student.Promotion);
+                }
+            }
+
+            return promotions;
         }
+
     }
 
-    class Grades
-    {
-        public int CourseId { get; set; }
-        public double Value { get; set; }
-        public string Commentary { get; set; }
-    }
-
-    class Course
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
 }

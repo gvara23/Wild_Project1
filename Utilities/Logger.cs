@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wild_Project1
+namespace Wild_Project1.Utilities
 {
     public static class Logger
     {
